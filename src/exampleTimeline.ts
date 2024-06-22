@@ -1,6 +1,6 @@
 
 export const exampleTimeline = `
-title: Welcome to Markwhen 👋
+title: Welcome to Markwhen
 description: Markwhen is a text to timeline tool.
 
 // Feel free to delete everything to start making your own timeline.
