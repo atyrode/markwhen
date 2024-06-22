@@ -29,7 +29,7 @@ export const useEditorOrchestratorStore = defineStore(
     const pageStore = usePageStore();
     const eventMapStore = useEventMapStore();
 
-    const editable = ref(false);
+    const editable = ref(true);
     const showTagFilterButtons = ref(true);
     const hoveringEventPaths = ref<EventPaths>();
     const choosingColor = ref(false);
