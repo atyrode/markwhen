@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { useTransformStore } from "@/Markwhen/transformStore";
 import { computed } from "vue";
 import Tag from "./Tag.vue";
 import Filter from "./Filter.vue";
 
 const transformStore = useTransformStore();
-const pageStore = usePageStore();
 
 const clearFilters = () => transformStore.clear();
 const toggleFilterUntagged = () => transformStore.toggleFilterUntagged();
 const isUntaggedFiltered = computed(() => transformStore.filterUntagged);
 
 const filterTag = (tag: string) => transformStore.filterTag(tag);
-const tags = computed(() => {
-  return Object.keys(pageStore.tags);
-});
+
+const pageIndex = 0; // Hardcoded
+const markwhenStore = useMarkwhenStore();
+
+const pageTimeline = computed(() => markwhenStore.timelines[pageIndex]);
+const tags = computed(() => Object.keys(pageTimeline.value.tags));
+
+
 </script>
 
 <template>
