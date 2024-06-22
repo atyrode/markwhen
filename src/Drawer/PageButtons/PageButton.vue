@@ -90,9 +90,9 @@ const events = computed(() => {
     @click="click"
     :class="{
       'bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 hover:bg-slate-200 dark:hover:bg-slate-800':
-        pageIndex === pageStore.pageIndex,
+        hovering,
       'bg-white hover:bg-indigo-50 dark:bg-slate-700 dark:hover:bg-slate-800 text-gray-500 dark:text-gray-300':
-        pageIndex !== pageStore.pageIndex,
+       !hovering,
       'w-10': !pageTitle,
       'shadow-lg': shadowed,
     }"
