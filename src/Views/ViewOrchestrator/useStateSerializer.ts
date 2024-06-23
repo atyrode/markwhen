@@ -15,18 +15,13 @@ export interface AppState {
   isDark?: boolean;
   hoveringPath?: EventPath;
   detailPath?: EventPath;
-  pageIndex: number;
+  path?: string;
   colorMap: Record<string, Record<string, string>>;
 }
 export interface MarkwhenState {
   rawText?: string;
   parsed?: Timeline[];
   transformed?: Node<NodeArray>;
-}
-
-export interface State {
-  app?: AppState;
-  markwhen?: MarkwhenState;
 }
 
 export const equivalentPaths = (p1?: EventPath, p2?: EventPath): boolean => {
@@ -56,21 +51,19 @@ export const useStateSerializer = () => {
     return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
   });
 
-  const state = computed<State>(() => ({
-    app: {
-      isDark: appSettingsStore.inferredDarkMode,
-      hoveringPath: toRaw(editorOrchestrator.hoveringEventPath) || undefined,
-      detailPath: toRaw(eventDetailStore.detailEventPath),
-      pageIndex: markwhenStore.pageIndex,
-      path: route.path,
-      colorMap: colorMap.value,
-    },
-    markwhen: {
-      rawText: markwhenStore.rawTimelineString,
-      parsed: markwhenStore.timelines,
-      transformed: transformStore.transformedEvents,
-    },
+  const appState = computed<AppState>(() => ({
+    isDark: appSettingsStore.inferredDarkMode,
+    hoveringPath: toRaw(editorOrchestrator.hoveringEventPath) || undefined,
+    detailPath: toRaw(eventDetailStore.detailEventPath),
+    path: route.path,
+    colorMap: colorMap.value,
   }));
 
-  return state;
+  const markwhenState = computed<MarkwhenState>(() => ({
+    rawText: markwhenStore.rawTimelineString,
+    parsed: markwhenStore.timelines,
+    transformed: transformStore.transformedEvents,
+  }));
+  
+  return { appState, markwhenState }
 };

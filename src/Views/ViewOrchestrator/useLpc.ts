@@ -5,10 +5,11 @@ import type {
 } from "@markwhen/parser/lib/Types";
 import type { Ref } from "vue";
 import type { DisplayScale } from "@/Markwhen/utilities/dateTimeUtilities";
-import type { EventPath, State } from "./useStateSerializer";
+import type { EventPath, AppState, MarkwhenState } from "./useStateSerializer";
 
 export interface MessageTypes {
-  state: State;
+  markwhenState: MarkwhenState;
+  appState: AppState;
   setHoveringPath: EventPath;
   setDetailPath: EventPath;
   key: string;
@@ -108,6 +109,7 @@ export function useLpc<ViewSpecificMessageTypes = {}>(
         return;
       }
 
+      console.log("Received message", e.data);
       const data = e.data;
       if (data.response) {
         calls.get(data.id)?.resolve(data);

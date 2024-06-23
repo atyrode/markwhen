@@ -62,12 +62,21 @@ export const useViewOrchestrator = (
       }
     },
     key(key: string) {},
+    appState: () => {
+      trigger.value = !trigger.value;
+    },
+    markwhenState: () => {
+      trigger.value = !trigger.value;
+    }
   });
 
   watchEffect(() => {
     // we're watching this so the view can request a state update
     trigger.value;
-    lpc.postRequest("state", toRaw(stateSerializer.value));
+    console.log("triggered");
+    lpc.postRequest("appState", toRaw(stateSerializer.appState.value));
+    lpc.postRequest("markwhenState", toRaw(stateSerializer.markwhenState.value));
+
   });
 
   const jumpToRange = (range: DateRange | DateRangeIso) =>
