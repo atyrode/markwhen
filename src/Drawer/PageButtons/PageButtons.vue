@@ -8,7 +8,7 @@ import PageButton from "./PageButton.vue";
 const editable = inject(isEditable);
 
 const markwhenStore = useMarkwhenStore();
-const { addPage, movePages } = useEditorOrchestratorStore();
+const { movePages } = useEditorOrchestratorStore();
 
 const moveFrom = ref(undefined as number | undefined);
 const moveTo = ref(undefined as number | undefined);
@@ -100,7 +100,6 @@ const moving = (pageIndex: number, translationAmount: number) => {
       v-if="editable"
       title="Add new page"
       class="w-8 h-8 flex items-center justify-center transition bg-white hover:bg-indigo-50 dark:bg-slate-700 dark:hover:bg-slate-800 dark:border-slate-600 flex-shrink-0 print-hidden"
-      @click="addPage"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

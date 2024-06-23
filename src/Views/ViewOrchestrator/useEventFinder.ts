@@ -6,8 +6,8 @@ import type { SomeNode } from "@markwhen/parser/lib/Node";
 import { get } from "@markwhen/parser/lib/Noder";
 import type { MaybeRef } from "@vueuse/core";
 import { computed, ref, unref, watchEffect } from "vue";
-import { usePageStore } from "@/Markwhen/pageStore";
 import { useTransformStore } from "@/Markwhen/transformStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 
 export const eqPath = (ep: EventPath, eps: EventPaths): boolean => {
   const path = eps[ep.type]?.path;
@@ -30,7 +30,7 @@ export const useEventFinder = (
   path?: MaybeRef<EventPath | EventPaths | undefined>
 ) => {
   const transformStore = useTransformStore();
-  const pageStore = usePageStore();
+  const markwhenStore = useMarkwhenStore();
   const transformedEvents = computed(() => transformStore.transformedEvents);
 
   const isEventPath = (e: EventPath | EventPaths): e is EventPath => {
@@ -55,7 +55,7 @@ export const useEventFinder = (
       if (eventPath.type === "pageFiltered") {
         node = transformedEvents.value;
       } else if (eventPath.type === "page") {
-        node = pageStore.pageTimeline.events;
+        node = markwhenStore.pageTimeline.events;
       } else {
         event.value = undefined;
         throw new Error("unimplemented");
@@ -73,7 +73,7 @@ export const useEventFinder = (
         if (type === "pageFiltered") {
           root = transformedEvents.value;
         } else if (type === "page") {
-          root = pageStore.pageTimeline.events;
+          root = markwhenStore.pageTimeline.events;
         }
         if (root) {
           event.value = get(root, eventPath[type]!.path);
