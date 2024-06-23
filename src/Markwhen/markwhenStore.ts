@@ -37,7 +37,7 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
     rawTimelineString.value = s;
   };
 
-  // Attempt to remove pageStore dependency
+  // Attempt to remove pageSt0re dependency
   const pageIndex = ref<number>(0);
   const setPageIndex = (index: number) => {
     pageIndex.value = index;
