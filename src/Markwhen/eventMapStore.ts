@@ -1,6 +1,5 @@
 import type {
   EventPath,
-  EventPaths,
 } from "@/Views/ViewOrchestrator/useStateSerializer";
 import type { SomeNode } from "@markwhen/parser/lib/Node";
 import { isEventNode, eventValue, iterate } from "@markwhen/parser/lib/Noder";
@@ -15,7 +14,6 @@ type EventPathMap = [number[], Map<number, EventPath>];
 
 const buildMap = (
   events: SomeNode | undefined,
-  type: EventPath["type"]
 ): EventPathMap => {
   const keys = [] as number[];
   const map = new Map<number, EventPath>();
@@ -31,7 +29,7 @@ const buildMap = (
       : node.rangeInText?.from;
     if (stringIndex !== undefined) {
       keys.push(stringIndex);
-      map.set(stringIndex, { type, path });
+      map.set(stringIndex, path);
     }
   }
 
@@ -66,7 +64,7 @@ const indexFromEventOrIndex = (
   if (typeof eventOrStartIndexOrPath === "number") {
     return eventOrStartIndexOrPath;
   }
-  if ("path" in eventOrStartIndexOrPath) {
+  if (eventOrStartIndexOrPath instanceof Array) {
     const node = useEventFinder(eventOrStartIndexOrPath).value;
     if (node) {
       if (isEventNode(node)) {
@@ -81,37 +79,25 @@ const indexFromEventOrIndex = (
 };
 
 export const useEventMapStore = defineStore("eventMap", () => {
-  const transformStore = useTransformStore();
   const markwhenStore = useMarkwhenStore();
 
   const pageEvents = computed(() => markwhenStore.pageTimeline.events);
-  const transformedEvents = computed(() => transformStore.transformedEvents);
 
   const pageMap = computed(() => {
     console.log("building page map");
-    const [keys, map] = buildMap(pageEvents.value, "page");
-    return (eventOrStartIndexOrPath: number | Event | EventPath) =>
-      getter(indexFromEventOrIndex(eventOrStartIndexOrPath), keys, map);
-  });
-
-  const transformedMap = computed(() => {
-    console.log("building transform map");
-    const [keys, map] = buildMap(transformedEvents.value, "pageFiltered");
+    const [keys, map] = buildMap(pageEvents.value);
     return (eventOrStartIndexOrPath: number | Event | EventPath) =>
       getter(indexFromEventOrIndex(eventOrStartIndexOrPath), keys, map);
   });
 
   const getAllPaths = computed(
     () =>
-      (eventOrStartIndexOrPath: number | Event | EventPath): EventPaths => ({
-        page: pageMap.value(eventOrStartIndexOrPath),
-        pageFiltered: transformedMap.value(eventOrStartIndexOrPath),
-      })
+      (eventOrStartIndexOrPath: number | Event | EventPath): EventPath => (
+        pageMap.value(eventOrStartIndexOrPath) || [] )
   );
 
   return {
     getPagePath: pageMap,
-    getTransformedPath: transformedMap,
-    getAllPaths,
+    getAllPaths
   };
 });

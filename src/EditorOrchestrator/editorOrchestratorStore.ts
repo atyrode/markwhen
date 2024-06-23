@@ -16,7 +16,6 @@ import { useEventMapStore } from "@/Markwhen/eventMapStore";
 import { isEventNode } from "@markwhen/parser/lib/Noder";
 import type {
   EventPath,
-  EventPaths,
 } from "@/Views/ViewOrchestrator/useStateSerializer";
 import { todayRange, type EventCreationParams } from "@/NewEvent/newEventStore";
 import { set } from "@vueuse/core";
@@ -29,7 +28,7 @@ export const useEditorOrchestratorStore = defineStore(
 
     const editable = ref(true);
     const showTagFilterButtons = ref(true);
-    const hoveringEventPaths = ref<EventPaths>();
+    const hoveringEventPath = ref<EventPath>();
     const choosingColor = ref(false);
 
     const setText = (text: string) => {
@@ -89,19 +88,15 @@ export const useEditorOrchestratorStore = defineStore(
     };
 
     const clearHoveringEvent = () => {
-      hoveringEventPaths.value = undefined;
+      hoveringEventPath.value = undefined;
     };
 
     const setHoveringEventPath = (path: EventPath) => {
-      hoveringEventPaths.value = eventMapStore.getAllPaths(path);
-    };
-
-    const setHoveringEventPaths = (paths: EventPaths) => {
-      hoveringEventPaths.value = paths;
+      hoveringEventPath.value = eventMapStore.getAllPaths(path);
     };
 
     const setHoveringEvent = (e: Event | number) => {
-      hoveringEventPaths.value = eventMapStore.getAllPaths(e);
+      hoveringEventPath.value = eventMapStore.getAllPaths(e);
     };
 
     const setChoosingColor = (choosing: boolean) => {
@@ -155,13 +150,13 @@ export const useEditorOrchestratorStore = defineStore(
       setText(newString);
     };
 
-    const showInEditor = (e: Event | EventPaths | EventPath) => {};
+    const showInEditor = (e: Event | EventPath) => {};
 
     return {
       // state
       editable,
       showTagFilterButtons,
-      hoveringEventPaths,
+      hoveringEventPath,
       choosingColor,
 
       // actions
@@ -170,7 +165,6 @@ export const useEditorOrchestratorStore = defineStore(
       deletePage,
       editEventDateRange,
       setHoveringEvent,
-      setHoveringEventPaths,
       clearHoveringEvent,
       createEventFromRange,
       setChoosingColor,

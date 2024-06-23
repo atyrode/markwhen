@@ -5,7 +5,7 @@ import JumpResultList from "./JumpResultList.vue";
 import { isParseResult, useJumpStore, type ParseResult } from "./jumpStore";
 import type lunr from "lunr";
 import { useEventDetailStore } from "@/EventDetail/eventDetailStore";
-import type { EventPaths } from "@/Views/ViewOrchestrator/useStateSerializer";
+import type { EventPath } from "@/Views/ViewOrchestrator/useStateSerializer";
 import { useVisualizationStore } from "@/Views/visualizationStore";
 
 const input = ref();
@@ -84,14 +84,11 @@ const selectedResult = (item: ParseResult | lunr.Index.Result) => {
   if (isParseResult(item)) {
     visualizationStore.jumpToRange(item.dateRange);
   } else {
-    const paths: EventPaths = JSON.parse(item.ref);
-    paths.pageFiltered?.path &&
-      visualizationStore.jumpToPath({
-        type: "pageFiltered",
-        path: paths.pageFiltered.path,
-      });
+    const path: EventPath = JSON.parse(item.ref);
+    path &&
+      visualizationStore.jumpToPath(path);
     if (eventDetailStore.shouldOpenDetailWhenJumping) {
-      eventDetailStore.setDetailEventPath(paths.page!);
+      eventDetailStore.setDetailEventPath(path);
     }
   }
   dialogShowing.value = false;

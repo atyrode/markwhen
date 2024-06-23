@@ -24,11 +24,8 @@ const event = computed<Event | undefined>(
     undefined
 );
 const parentPath = computed(() => {
-  if (detailEventPath.value && detailEventPath.value.path.length > 1) {
-    return {
-      type: detailEventPath.value.type,
-      path: detailEventPath.value.path.slice(0, -1),
-    } as EventPath;
+  if (detailEventPath.value && detailEventPath.value.length > 1) {
+    return detailEventPath.value.slice(0, -1) as EventPath;
   }
 });
 const parentGroup = useEventFinder(parentPath);

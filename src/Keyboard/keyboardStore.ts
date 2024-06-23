@@ -51,10 +51,7 @@ export const useKeyboardStore = defineStore("keyboard", () => {
         transformStore.transformedEvents &&
         getLast(transformStore.transformedEvents).path;
       if (last) {
-        eventDetailStore.setDetailEventPath({
-          type: "pageFiltered",
-          path: last,
-        });
+        eventDetailStore.setDetailEventPath(last);
       }
     } else if (eventDetailStore.prev) {
       eventDetailStore.setDetailEventPath(eventDetailStore.prev);
@@ -62,7 +59,7 @@ export const useKeyboardStore = defineStore("keyboard", () => {
   });
   key(period, () => {
     if (!eventDetailStore.detailEventPath) {
-      eventDetailStore.setDetailEventPath({ type: "pageFiltered", path: [0] });
+      eventDetailStore.setDetailEventPath([0]);
     } else if (eventDetailStore.next) {
       eventDetailStore.setDetailEventPath(eventDetailStore.next);
     }
