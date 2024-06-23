@@ -1,5 +1,6 @@
 import type {
   EventPath,
+  EventPaths,
 } from "@/Views/ViewOrchestrator/useStateSerializer";
 import type { SomeNode } from "@markwhen/parser/lib/Node";
 import { isEventNode, eventValue, iterate } from "@markwhen/parser/lib/Noder";
@@ -14,6 +15,7 @@ type EventPathMap = [number[], Map<number, EventPath>];
 
 const buildMap = (
   events: SomeNode | undefined,
+  type: EventPath["type"]
 ): EventPathMap => {
   const keys = [] as number[];
   const map = new Map<number, EventPath>();
@@ -29,7 +31,7 @@ const buildMap = (
       : node.rangeInText?.from;
     if (stringIndex !== undefined) {
       keys.push(stringIndex);
-      map.set(stringIndex, path);
+      map.set(stringIndex, { type, path });
     }
   }
 
@@ -75,8 +77,7 @@ const indexFromEventOrIndex = (
     }
     throw new Error("Not a valid path");
   }
-  //return eventOrStartIndexOrPath.rangeInText.from;
-  return 0;
+  return eventOrStartIndexOrPath.rangeInText.from;
 };
 
 export const useEventMapStore = defineStore("eventMap", () => {
@@ -88,14 +89,14 @@ export const useEventMapStore = defineStore("eventMap", () => {
 
   const pageMap = computed(() => {
     console.log("building page map");
-    const [keys, map] = buildMap(pageEvents.value);
+    const [keys, map] = buildMap(pageEvents.value, "page");
     return (eventOrStartIndexOrPath: number | Event | EventPath) =>
       getter(indexFromEventOrIndex(eventOrStartIndexOrPath), keys, map);
   });
 
   const transformedMap = computed(() => {
     console.log("building transform map");
-    const [keys, map] = buildMap(transformedEvents.value);
+    const [keys, map] = buildMap(transformedEvents.value, "pageFiltered");
     return (eventOrStartIndexOrPath: number | Event | EventPath) =>
       getter(indexFromEventOrIndex(eventOrStartIndexOrPath), keys, map);
   });
