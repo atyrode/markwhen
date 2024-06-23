@@ -6,12 +6,9 @@ import Dialog from "@/Dialog/Dialog.vue";
 import TagRow from "./TagRow.vue";
 
 const transformStore = useTransformStore();
-
-const pageIndex = 0; // Hardcoded
 const markwhenStore = useMarkwhenStore();
 
-const pageTimeline = computed(() => markwhenStore.timelines[pageIndex]);
-const tags = computed(() => Object.keys(pageTimeline.value.tags));
+const tags = computed(() => markwhenStore.tags);
 
 const dialogShowing = computed({
   get() {

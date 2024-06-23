@@ -13,12 +13,8 @@ const isUntaggedFiltered = computed(() => transformStore.filterUntagged);
 
 const filterTag = (tag: string) => transformStore.filterTag(tag);
 
-const pageIndex = 0; // Hardcoded
 const markwhenStore = useMarkwhenStore();
-
-const pageTimeline = computed(() => markwhenStore.timelines[pageIndex]);
-const tags = computed(() => Object.keys(pageTimeline.value.tags));
-
+const tags = computed(() => markwhenStore.tags);
 
 </script>
 
