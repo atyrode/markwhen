@@ -13,7 +13,7 @@ import { toInnerHtml } from "@/Markwhen/utilities/innerHtml";
 import JumpResultListItemMeta from "./JumpResultListItemMeta.vue";
 import { ref, watch } from "vue";
 import { eventValue, isEventNode } from "@markwhen/parser/lib/Noder";
-import type { EventPaths } from "@/Views/ViewOrchestrator/useStateSerializer";
+import type { EventPath } from "@/Views/ViewOrchestrator/useStateSerializer";
 import { useDateRangeString } from "./dateRangeString";
 
 defineProps<{ jumpResult: JumpResults }>();
@@ -29,7 +29,7 @@ const eventFinder = useEventFinder;
 
 const matchedEventOrGroup: (sr: lunr.Index.Result) => SomeNode | undefined = (
   sr: lunr.Index.Result
-) => eventFinder(JSON.parse(sr.ref) as EventPaths).value;
+) => eventFinder(JSON.parse(sr.ref) as EventPath).value;
 
 const titleForListItem = (item: ParseResult | lunr.Index.Result) => {
   if (isParseResult(item)) {

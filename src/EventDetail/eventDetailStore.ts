@@ -21,7 +21,6 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
   watch(
     () => panelStore.detailPanelState.visible,
     (visible) => {
-      console.log("1. detailEventPath.value", detailEventPath.value);
       if (!visible) {
         detailEventPath.value = undefined;
       }
@@ -31,21 +30,16 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
   const toggle = () => {
     const show = !panelStore.detailPanelState.visible;
     panelStore.setVisibility(PanelDetail, show);
-    console.log("2. detailEventPath.value", detailEventPath.value);
     if (!show) {
       detailEventPath.value = undefined;
     }
   };
 
   const clearDetailEventPath = () => {
-    console.log("3. detailEventPath.value", detailEventPath.value);
-
     detailEventPath.value = undefined;
   };
 
   const setDetailEventPath = (path: EventPath) => {
-    console.log("4. detailEventPath.value", detailEventPath.value);
-
     if (equivalentPaths(path, detailEventPath.value)) {
       detailEventPath.value = undefined;
     } else {
@@ -56,18 +50,16 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
 
   const isDetailEventPath = computed(
     () => (path: EventPath | undefined) => {
-      console.log("5. detailEventPath.value", detailEventPath.value);
       !!path && equivalentPaths(path, detailEventPath.value)
     }
   );
 
   const prev = computed<EventPath | undefined>(() => {
-    console.log("6. detailEventPath.value", detailEventPath.value);
-
     if (!detailEventPath.value) {
       return;
     }
-    const { path, type } = detailEventPath.value;
+    const path = detailEventPath.value;
+
     if (!path.length) {
       return undefined;
     }
@@ -80,28 +72,19 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
         if (!tempPath.length) {
           return undefined;
         }
-        const possibleSibling = useEventFinder({ type, path: tempPath });
+        const possibleSibling = useEventFinder(tempPath);
         if (possibleSibling.value) {
           const lastOfSibling = getLast(possibleSibling.value);
-          return {
-            type,
-            path: [...tempPath, ...lastOfSibling.path],
-          };
+          return [...tempPath, ...lastOfSibling.path];
         }
       } else {
         tempPath = [...tempPath.slice(0, -1)];
         if (!tempPath.length) {
           return undefined;
         }
-        const possibleNode = useEventFinder({
-          type,
-          path: tempPath,
-        });
+        const possibleNode = useEventFinder(tempPath);
         if (possibleNode.value) {
-          return {
-            type,
-            path: tempPath,
-          };
+          return tempPath;
         }
       }
     } while (tempPath.length);
@@ -111,39 +94,26 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
     if (!detailEventPath.value) {
       return;
     }
-    const { path, type } = detailEventPath.value;
+    const path = detailEventPath.value;
     if (!path.length) {
       return undefined;
     }
     // [0, 3, 6, 1, 0]
     let tempPath = path;
     let pathAttempt = [...tempPath, 0];
-    let possibleNode = useEventFinder({
-      type,
-      // next nested group
-      path: pathAttempt,
-    });
+    let possibleNode = useEventFinder(pathAttempt);
+
     if (possibleNode.value) {
-      return {
-        type,
-        path: pathAttempt,
-      };
+      return pathAttempt;
     }
     do {
       pathAttempt = [
         ...tempPath.slice(0, -1),
         tempPath[tempPath.length - 1] + 1,
       ];
-      possibleNode = useEventFinder({
-        type,
-        // next sibling
-        path: pathAttempt,
-      });
+      possibleNode = useEventFinder(pathAttempt);
       if (possibleNode.value) {
-        return {
-          type,
-          path: pathAttempt,
-        };
+        return pathAttempt;
       }
       if (tempPath.length > 1) {
         // only try this is we're at the right level
@@ -151,16 +121,9 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
           ...tempPath.slice(0, -2),
           tempPath[tempPath.length - 2] + 1,
         ];
-        possibleNode = useEventFinder({
-          type,
-          // next uncle
-          path: pathAttempt,
-        });
+        possibleNode = useEventFinder(pathAttempt);
         if (possibleNode.value) {
-          return {
-            type,
-            path: pathAttempt,
-          };
+          return pathAttempt;
         }
       }
       // go up one and continue

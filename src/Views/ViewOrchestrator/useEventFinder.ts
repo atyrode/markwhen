@@ -1,6 +1,5 @@
 import type {
   EventPath,
-  EventPaths,
 } from "@/Views/ViewOrchestrator/useStateSerializer";
 import type { SomeNode } from "@markwhen/parser/lib/Node";
 import { get } from "@markwhen/parser/lib/Noder";
@@ -9,32 +8,19 @@ import { computed, ref, unref, watchEffect } from "vue";
 import { useTransformStore } from "@/Markwhen/transformStore";
 import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 
-export const eqPath = (ep: EventPath, eps: EventPaths): boolean => {
-  const path = eps[ep.type]?.path;
-  if (path?.length !== ep.path.length) {
-    return false;
-  }
-  for (let i = 0; i < path.length; i++) {
-    if (path[i] !== ep.path[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
 export type EventFinder = (
-  eventPath?: EventPath | EventPaths | null
+  eventPath?: EventPath | null
 ) => SomeNode | undefined;
 
 export const useEventFinder = (
-  path?: MaybeRef<EventPath | EventPaths | undefined>
+  path?: MaybeRef<EventPath | undefined>
 ) => {
   const transformStore = useTransformStore();
   const markwhenStore = useMarkwhenStore();
   const transformedEvents = computed(() => transformStore.transformedEvents);
 
-  const isEventPath = (e: EventPath | EventPaths): e is EventPath => {
-    return (e as EventPath).path && Array.isArray((e as EventPath).path);
+  const isEventPath = (e: EventPath): e is EventPath => {
+    return (e as EventPath) && Array.isArray((e as EventPath));
   };
 
   const event = ref<SomeNode>();
@@ -50,35 +36,16 @@ export const useEventFinder = (
       return;
     }
     if (isEventPath(eventPath)) {
-      const path = eventPath.path;
       let node: SomeNode | undefined;
-      if (eventPath.type === "pageFiltered") {
-        node = transformedEvents.value;
-      } else if (eventPath.type === "page") {
-        node = markwhenStore.pageTimeline.events;
-      } else {
-        event.value = undefined;
-        throw new Error("unimplemented");
-      }
-      event.value = node ? get(node, eventPath.path) : undefined;
+      node = markwhenStore.pageTimeline.events;
+      event.value = node ? get(node, eventPath) : undefined;
       return;
     } else {
-      const types: EventPath["type"][] = ["page", "pageFiltered", "whole"];
-      for (const type of types) {
-        if (!eventPath[type]) {
-          event.value = undefined;
-          continue;
-        }
-        let root: SomeNode | undefined;
-        if (type === "pageFiltered") {
-          root = transformedEvents.value;
-        } else if (type === "page") {
-          root = markwhenStore.pageTimeline.events;
-        }
-        if (root) {
-          event.value = get(root, eventPath[type]!.path);
-          return;
-        }
+      let root: SomeNode | undefined;
+      root = markwhenStore.pageTimeline.events;
+      if (root) {
+        event.value = get(root, eventPath);
+        return;
       }
     }
     event.value = undefined;
