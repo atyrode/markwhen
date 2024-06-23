@@ -9,16 +9,11 @@ import { useEventDetailStore } from "@/EventDetail/eventDetailStore";
 import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
 import { useRoute } from "vue-router";
 
-export type EventPaths = { [pathType in EventPath["type"]]?: EventPath };
-
-export interface EventPath {
-  type: "whole" | "page" | "pageFiltered";
-  path: number[];
-}
+export type EventPath = number[];
 
 export interface AppState {
   isDark?: boolean;
-  hoveringPath?: EventPaths;
+  hoveringPath?: EventPath;
   detailPath?: EventPath;
   pageIndex: number;
   colorMap: Record<string, Record<string, string>>;
@@ -35,18 +30,10 @@ export interface State {
 }
 
 export const equivalentPaths = (p1?: EventPath, p2?: EventPath): boolean => {
-  if (!p1 || !p2 || p1.type !== p2.type) {
+  if (!p1 || !p2) {
     return false;
   }
-  const path1 = p1.path;
-  const path2 = p2.path;
-
-  return (
-    path1.length > 0 &&
-    path2.length > 0 &&
-    path1.length === path2.length &&
-    path1.every((pathValue, index) => path2[index] === pathValue)
-  );
+  return p1.join(",") === p2.join(",");
 };
 
 export const useStateSerializer = () => {

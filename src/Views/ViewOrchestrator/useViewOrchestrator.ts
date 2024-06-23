@@ -34,7 +34,7 @@ export const useViewOrchestrator = (
     setHoveringPath: (path) => {
       if (path) {
         if (
-          path.path.join(",") !==
+          path.join(",") !==
           editorOrchestrator.hoveringEventPaths?.pageFiltered?.path.join(",")
         )
           editorOrchestrator.setHoveringEventPath(path);
