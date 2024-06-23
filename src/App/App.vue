@@ -4,7 +4,6 @@ import { computed, provide } from "vue";
 import Drawer from "../Drawer/Drawer.vue";
 import { useEditorOrchestratorStore } from "@/EditorOrchestrator/editorOrchestratorStore";
 import { useAppStore } from "./appStore";
-import { usePageEffects } from "@/Markwhen/composables/usePageEffects";
 import Sidebar from "../Sidebar/Sidebar.vue";
 import { useAppHead } from "./composables/useAppHead";
 import Panels from "../Panels/Panels.vue";
@@ -19,7 +18,6 @@ const appStore = useAppStore();
 const sidebarStore = useSidebarStore();
 const editorOrchestrator = useEditorOrchestratorStore();
 
-usePageEffects();
 useAppHead();
 useKeyboardStore();
 useQuerySetter();
@@ -49,7 +47,7 @@ provide(isEditable, editorOrchestrator.editable);
         <Drawer />
       </div>
       <!-- Uncomment the QuickEditor to have some editing functionality -->
-      <QuickEditor />
+      <!-- <QuickEditor /> -->
     </div>
   </div>
 </template>

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { useTransformStore } from "@/Markwhen/transformStore";
 import { computed } from "vue";
 import Dialog from "@/Dialog/Dialog.vue";
 import TagRow from "./TagRow.vue";
 
 const transformStore = useTransformStore();
-const pageStore = usePageStore();
+const markwhenStore = useMarkwhenStore();
+
+const tags = computed(() => markwhenStore.tags);
 
 const dialogShowing = computed({
   get() {
@@ -16,7 +18,6 @@ const dialogShowing = computed({
     transformStore.setFilterDialogShowing(val);
   },
 });
-const tags = computed(() => Object.keys(pageStore.tags));
 const filterTag = (tag: string) => transformStore.filterTag(tag);
 const filterUntagged = computed({
   get: () => transformStore.filterUntagged,

@@ -1,6 +1,5 @@
 import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { defineStore } from "pinia";
-import { PAGE_BREAK } from "@markwhen/parser/lib/regex";
 import {
   type Event,
   type DateFormat,
@@ -9,7 +8,6 @@ import {
   toDateRange,
 } from "@markwhen/parser/lib/Types";
 import { ref } from "vue";
-import { usePageStore } from "@/Markwhen/pageStore";
 import {
   dateRangeToString,
   type DisplayScale,
@@ -21,12 +19,12 @@ import type {
   EventPaths,
 } from "@/Views/ViewOrchestrator/useStateSerializer";
 import { todayRange, type EventCreationParams } from "@/NewEvent/newEventStore";
+import { set } from "@vueuse/core";
 
 export const useEditorOrchestratorStore = defineStore(
   "editorOrchestrator",
   () => {
     const markwhenStore = useMarkwhenStore();
-    const pageStore = usePageStore();
     const eventMapStore = useEventMapStore();
 
     const editable = ref(true);
@@ -39,43 +37,17 @@ export const useEditorOrchestratorStore = defineStore(
     };
 
     const addPage = () => {
-      const newString = markwhenStore.rawTimelineString
-        .concat(PAGE_BREAK)
-        .concat(`title: Page ${markwhenStore.timelines.length + 1}\n\n\n`);
-
-      setText(newString);
+      console.log("addPage here in editorOrchestratorStore.ts might be problematic!");
+      setText(markwhenStore.rawTimelineString);
     };
 
     const movePages = (from: number, to: number) => {
-      const timelineString = markwhenStore.rawTimelineString;
-      const timelines = markwhenStore.timelines;
-
-      if (from === to) {
-        return timelineString;
-      }
-      // Just do it heavy-handedly
-      const sub = (from: number, to: number) =>
-        timelineString.substring(from, to);
-      const order = newOrder(
-        timelines.map((c, i) => i),
-        from,
-        to
-      );
-
-      const newString = order
-        .map((i) => {
-          const metadata = timelines[i].metadata;
-          const start = metadata.startStringIndex;
-          const end = metadata.endStringIndex;
-          return sub(start, end);
-        })
-        .join(PAGE_BREAK);
-
-      setText(newString);
+      console.log("movePages here in editorOrchestratorStore.ts might be problematic!");
+      setText(markwhenStore.rawTimelineString);
     };
 
     const setPageTimelineString = (newString: string) => {
-      const pageMetadata = pageStore.pageTimelineMetadata;
+      const pageMetadata = markwhenStore.pageTimeline.metadata;
       const currentTimelineString = markwhenStore.rawTimelineString;
       const pre = currentTimelineString.substring(
         0,
@@ -88,30 +60,8 @@ export const useEditorOrchestratorStore = defineStore(
     };
 
     const deletePage = (index: number) => {
-      const timelineString = markwhenStore.rawTimelineString;
-      const timelines = markwhenStore.timelines;
-      if (timelines.length === 1) {
-        return "";
-      }
-
-      // If we're deleting the first page, we delete the
-      // break after if, otherwise we delete the break before it
-      const timeline = timelines[index] as Timeline;
-      const currentTimelineString = timelineString || "";
-
-      let startIndex = timeline.metadata.startStringIndex;
-      let endIndex = timeline.metadata.endStringIndex;
-      if (index === 0) {
-        endIndex += PAGE_BREAK.length;
-      } else {
-        startIndex -= PAGE_BREAK.length;
-      }
-
-      const newString =
-        currentTimelineString.substring(0, startIndex) +
-        currentTimelineString.substring(endIndex);
-
-      setText(newString);
+      console.log("deletePage here in editorOrchestratorStore.ts might be problematic!");
+      setText(markwhenStore.rawTimelineString);
     };
 
     const editEventDateRange = (
@@ -159,7 +109,7 @@ export const useEditorOrchestratorStore = defineStore(
     };
 
     const newEventInsertionIndex = () =>
-      pageStore.pageTimeline.metadata.endStringIndex;
+      markwhenStore.pageTimeline.metadata.endStringIndex;
 
     const newEventString = (params: EventCreationParams) =>
       `${params.range || dateRangeToString(todayRange(), "day", undefined)}: ${

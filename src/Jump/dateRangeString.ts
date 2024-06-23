@@ -1,15 +1,15 @@
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { dateRangeToString } from "@/Markwhen/utilities/dateTimeUtilities";
 import type { DateFormat } from "@markwhen/parser/lib/Types";
 import type { ParseResult } from "./jumpStore";
 
 export const useDateRangeString = () => {
-  const pageStore = usePageStore();
+  const markwhenStore = useMarkwhenStore();
 
   return (parseResult: ParseResult) =>
     dateRangeToString(
       parseResult.dateRange,
       parseResult.scale || "day",
-      pageStore.header.dateFormat as DateFormat
+      markwhenStore.pageTimeline.header.dateFormat as DateFormat
     );
 };

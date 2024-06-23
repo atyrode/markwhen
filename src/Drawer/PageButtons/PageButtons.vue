@@ -101,7 +101,7 @@ const moving = (pageIndex: number, translationAmount: number) => {
       title="Add new page"
       class="w-8 h-8 flex items-center justify-center transition bg-white hover:bg-indigo-50 dark:bg-slate-700 dark:hover:bg-slate-800 dark:border-slate-600 flex-shrink-0 print-hidden"
       @click="addPage"
-    >
+      >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-5 w-5"

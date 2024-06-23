@@ -4,14 +4,12 @@ import type { Timeline } from "@markwhen/parser/lib/Types";
 import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { isEditable } from "@/injectionKeys";
 import { useEditorOrchestratorStore } from "@/EditorOrchestrator/editorOrchestratorStore";
-import { usePageStore } from "@/Markwhen/pageStore";
 import { useIsTouchscreen } from "@/App/composables/useIsTouchscreen";
 import { usePageButtonMove } from "./composables/usePageButtonMove";
 
 const { canHover } = useIsTouchscreen();
 const { deletePage } = useEditorOrchestratorStore();
 const markwhenStore = useMarkwhenStore();
-const pageStore = usePageStore();
 
 const props = defineProps<{
   timeline: Timeline;
@@ -54,7 +52,8 @@ const computedStyle = computed(() => {
 watch(translateX, (val) => emit("moving", val || 0));
 
 const click = () => {
-  pageStore.setPageIndex(props.pageIndex);
+  // pageSt0re.setPageIndex(props.pageIndex);
+  console.log("Click! Nothing happens anymore!");
 };
 
 const mouseOver = () => {
@@ -90,9 +89,9 @@ const events = computed(() => {
     @click="click"
     :class="{
       'bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 hover:bg-slate-200 dark:hover:bg-slate-800':
-        pageIndex === pageStore.pageIndex,
+        hovering,
       'bg-white hover:bg-indigo-50 dark:bg-slate-700 dark:hover:bg-slate-800 text-gray-500 dark:text-gray-300':
-        pageIndex !== pageStore.pageIndex,
+       !hovering,
       'w-10': !pageTitle,
       'shadow-lg': shadowed,
     }"

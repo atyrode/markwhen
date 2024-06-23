@@ -1,7 +1,8 @@
 import { computed } from "vue";
 import lunr from "lunr";
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { useEventMapStore } from "@/Markwhen/eventMapStore";
+
 import {
   toDateRange,
   type Block,
@@ -73,7 +74,7 @@ export const searchDate = (input: string, scale: DisplayScale = "day") => {
 };
 
 export const useSearch = () => {
-  const pageStore = usePageStore();
+  const markwhenStore = useMarkwhenStore();
   const mapStore = useEventMapStore();
 
   const eventToDocument = (e: Event, path: EventPaths): SearchDocument => ({
@@ -96,7 +97,7 @@ export const useSearch = () => {
 
   const eventSearchDocuments = computed(() => {
     const documents = [] as SearchDocument[];
-    for (const { node } of iterate(pageStore.pageTimeline.events)) {
+    for (const { node } of iterate(markwhenStore.pageTimeline.events)) {
       if (isEventNode(node)) {
         documents.push(
           eventToDocument(

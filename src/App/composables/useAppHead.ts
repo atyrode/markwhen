@@ -1,15 +1,8 @@
-import { usePageStore } from "@/Markwhen/pageStore";
 import { computed } from "@vue/reactivity";
 import { useHead } from "@vueuse/head";
 
 export const useAppHead = () => {
-  const pageStore = usePageStore();
-
   const title = computed(() => {
-    const pageTitle = pageStore.header.title;
-    if (pageTitle) {
-      return `${pageTitle} - Markwhen`;
-    }
     return "Markwhen";
   });
   useHead({

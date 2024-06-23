@@ -1,4 +1,5 @@
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
+
 import { COMPLETION_REGEX } from "@markwhen/parser/lib/regex";
 import type { Event } from "@markwhen/parser/lib/Types";
 import type { MaybeRef } from "@vueuse/core";
@@ -39,7 +40,7 @@ export const useEventRefs = (
   event: MaybeRef<Event | undefined>,
   isEventRow: () => boolean = () => true
 ) => {
-  const pageStore = usePageStore();
+  const markwhenStore = useMarkwhenStore();
 
   const cachedEventComputed = <T>(
     val: () => T,
@@ -92,7 +93,7 @@ export const useEventRefs = (
       return;
     }
     const eventColor = tags.value?.length
-      ? pageStore.tags[tags.value[0]]
+      ? markwhenStore.pageTimeline.tags[tags.value[0]]
       : undefined;
     if (color.value !== eventColor) {
       color.value = eventColor;

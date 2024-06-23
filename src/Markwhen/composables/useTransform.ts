@@ -11,7 +11,7 @@ import {
   isEventNode,
 } from "@markwhen/parser/lib/Noder";
 import { toDateRange, type Event } from "@markwhen/parser/lib/Types";
-import { recurrenceLimit } from "../pageStore";
+import { recurrenceLimit } from "@/Markwhen/markwhenStore";
 
 import type { Sort } from "../transformStore";
 

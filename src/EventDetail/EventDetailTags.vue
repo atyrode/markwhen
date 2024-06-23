@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { computed } from "vue";
 import Tag from "../Drawer/ViewSettings/Tags/Tag.vue";
 
 const props = defineProps<{ tags: string[] }>();
-const pageStore = usePageStore();
+const markwhenStore = useMarkwhenStore();
 
-const allTags = computed(() => Object.keys(pageStore.pageTimeline.tags));
+const allTags = computed(() => Object.keys(markwhenStore.pageTimeline.tags));
 const ourTags = computed(() => props.tags);
 const notOurTags = computed(() =>
   allTags.value.filter((t) => !ourTags.value.includes(t))

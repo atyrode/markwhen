@@ -6,6 +6,8 @@ import type { Timeline } from "@markwhen/parser/lib/Types";
 import { useParserWorker } from "./composables/useParserWorker";
 import { exampleTimeline } from "@/exampleTimeline";
 
+export const recurrenceLimit = 100;
+
 export const useMarkwhenStore = defineStore("markwhen", () => {
   const rawTimelineString = ref<string>(exampleTimeline);
 
@@ -35,6 +37,15 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
     rawTimelineString.value = s;
   };
 
+  // Attempt to remove pageSt0re dependency
+  const pageIndex = ref<number>(0);
+  const setPageIndex = (index: number) => {
+    pageIndex.value = index;
+  };
+  const tags = computed(() => Object.keys(timelines.value[pageIndex.value].tags));
+  const pageTimeline = computed(() => timelines.value[pageIndex.value]);
+  ///
+
   return {
     // state
     rawTimelineString,
@@ -42,8 +53,12 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
 
     // getters
     timelines,
+    pageTimeline,
+    tags,
+    pageIndex,
 
     // actions
     setRawTimelineString,
+    setPageIndex,
   };
 });

@@ -3,7 +3,6 @@ import type { NodeArray, Node } from "@markwhen/parser/lib/Node";
 import type { Timeline } from "@markwhen/parser/lib/Types";
 import { useAppStore } from "@/App/appStore";
 import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
-import { usePageStore } from "@/Markwhen/pageStore";
 import { useTransformStore } from "@/Markwhen/transformStore";
 import { useEditorOrchestratorStore } from "@/EditorOrchestrator/editorOrchestratorStore";
 import { useEventDetailStore } from "@/EventDetail/eventDetailStore";
@@ -22,16 +21,14 @@ export interface AppState {
   hoveringPath?: EventPaths;
   detailPath?: EventPath;
   pageIndex: number;
+  colorMap: Record<string, Record<string, string>>;
 }
 export interface MarkwhenState {
   rawText?: string;
   parsed?: Timeline[];
-  page?: PageState;
-}
-export interface PageState {
-  parsed?: Timeline;
   transformed?: Node<NodeArray>;
 }
+
 export interface State {
   app?: AppState;
   markwhen?: MarkwhenState;
@@ -55,27 +52,28 @@ export const equivalentPaths = (p1?: EventPath, p2?: EventPath): boolean => {
 export const useStateSerializer = () => {
   const appSettingsStore = useAppSettingsStore();
   const markwhenStore = useMarkwhenStore();
-  const pageStore = usePageStore();
   const transformStore = useTransformStore();
   const editorOrchestrator = useEditorOrchestratorStore();
   const eventDetailStore = useEventDetailStore();
   const route = useRoute()
+
+  const colorMap = computed(() => { 
+    return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
+  });
 
   const state = computed<State>(() => ({
     app: {
       isDark: appSettingsStore.inferredDarkMode,
       hoveringPath: toRaw(editorOrchestrator.hoveringEventPaths) || undefined,
       detailPath: toRaw(eventDetailStore.detailEventPath),
-      pageIndex: pageStore.pageIndex,
-      path: route.path
+      pageIndex: markwhenStore.pageIndex,
+      path: route.path,
+      colorMap: colorMap.value,
     },
     markwhen: {
       rawText: markwhenStore.rawTimelineString,
       parsed: markwhenStore.timelines,
-      page: {
-        parsed: pageStore.pageTimeline,
-        transformed: transformStore.transformedEvents,
-      },
+      transformed: transformStore.transformedEvents,
     },
   }));
 
