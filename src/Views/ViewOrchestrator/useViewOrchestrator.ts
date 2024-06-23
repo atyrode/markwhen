@@ -10,6 +10,7 @@ import {
 import { ref, watchEffect, type Ref, watch, toRaw, unref } from "vue";
 import { useLpc } from "./useLpc";
 import { useStateSerializer, type EventPath } from "./useStateSerializer";
+import { useEventFinder } from "@/Views/ViewOrchestrator/useEventFinder";
 
 export const useViewOrchestrator = (
   frame: Ref<HTMLIFrameElement | undefined>
@@ -67,6 +68,10 @@ export const useViewOrchestrator = (
     },
     markwhenState: () => {
       //trigger.value = !trigger.value;
+    },
+    editEventDateRange: ({path, range, scale, preferredInterpolationFormat}) => {
+      const event = useEventFinder(path);
+      editorOrchestrator.editEventDateRange(event.value, range, scale, preferredInterpolationFormat)
     }
   });
 

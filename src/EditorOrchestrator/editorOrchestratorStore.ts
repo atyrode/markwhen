@@ -4,8 +4,10 @@ import {
   type Event,
   type DateFormat,
   type DateRange,
+  type DateRangeIso,
   type Timeline,
   toDateRange,
+  
 } from "@markwhen/parser/lib/Types";
 import { ref } from "vue";
 import {
@@ -65,23 +67,23 @@ export const useEditorOrchestratorStore = defineStore(
 
     const editEventDateRange = (
       event: Event,
-      range: DateRange,
+      range: DateRangeIso,
       scale: DisplayScale,
       preferredInterpolationFormat: DateFormat | undefined
     ) => {
-      if (equivalentRanges(toDateRange(event.dateRangeIso), range)) {
+      if (equivalentRanges(toDateRange(event.value.dateRangeIso), range)) {
         return;
       }
       const timelineString = markwhenStore.rawTimelineString;
 
-      const inTextFrom = event.dateRangeInText.from;
-      const inTextTo = event.dateRangeInText.to;
+      const inTextFrom = event.value.dateRangeInText.from;
+      const inTextTo = event.value.dateRangeInText.to;
       const pre = timelineString.slice(0, inTextFrom);
       const post = timelineString.slice(inTextTo);
 
       const newString =
         pre +
-        `${dateRangeToString(range, scale, preferredInterpolationFormat)}` +
+        `${dateRangeToString(toDateRange(range), scale, preferredInterpolationFormat)}` +
         post;
 
       setText(newString);
