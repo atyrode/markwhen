@@ -73,7 +73,6 @@ export const useViewOrchestrator = (
   watchEffect(() => {
     // we're watching this so the view can request a state update
     trigger.value;
-    console.log("triggered");
     lpc.postRequest("appState", toRaw(stateSerializer.appState.value));
     lpc.postRequest("markwhenState", toRaw(stateSerializer.markwhenState.value));
 

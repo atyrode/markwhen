@@ -108,8 +108,6 @@ export function useLpc<ViewSpecificMessageTypes = {}>(
       if (!e.data.id || !e.data.id.startsWith("markwhen")) {
         return;
       }
-
-      console.log("Received message", e.data);
       const data = e.data;
       if (data.response) {
         calls.get(data.id)?.resolve(data);
