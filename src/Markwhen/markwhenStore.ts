@@ -53,6 +53,7 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
     timelines,
     pageTimeline,
     tags,
+    pageIndex,
 
     // actions
     setRawTimelineString,
