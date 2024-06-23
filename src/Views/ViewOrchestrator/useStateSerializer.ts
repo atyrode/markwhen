@@ -21,6 +21,7 @@ export interface AppState {
   hoveringPath?: EventPaths;
   detailPath?: EventPath;
   pageIndex: number;
+  colorMap: Record<string, Record<string, string>>;
 }
 export interface MarkwhenState {
   rawText?: string;
@@ -56,13 +57,18 @@ export const useStateSerializer = () => {
   const eventDetailStore = useEventDetailStore();
   const route = useRoute()
 
+  const colorMap = computed(() => { 
+    return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
+  });
+
   const state = computed<State>(() => ({
     app: {
       isDark: appSettingsStore.inferredDarkMode,
       hoveringPath: toRaw(editorOrchestrator.hoveringEventPaths) || undefined,
       detailPath: toRaw(eventDetailStore.detailEventPath),
       pageIndex: markwhenStore.pageIndex,
-      path: route.path
+      path: route.path,
+      colorMap: colorMap.value,
     },
     markwhen: {
       rawText: markwhenStore.rawTimelineString,
