@@ -21,7 +21,9 @@ export interface AppState {
   hoveringPath?: EventPaths;
   detailPath?: EventPath;
   pageIndex: number;
-  colorMap: Record<string, Record<string, string>>;
+  colorMap: Record<string, string>;
+  // Fix for a later commit in Timeline
+  // colorMap: Record<string, Record<string, string>>;
 }
 export interface MarkwhenState {
   rawText?: string;
@@ -57,8 +59,10 @@ export const useStateSerializer = () => {
   const eventDetailStore = useEventDetailStore();
   const route = useRoute()
 
-  const colorMap = computed(() => { 
-    return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
+  const colorMap = computed(() => {
+    return markwhenStore.timelines[markwhenStore.pageIndex].tags
+    // Fix for a later commit in Timeline
+    // return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
   });
 
   const state = computed<State>(() => ({
