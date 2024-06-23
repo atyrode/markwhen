@@ -21,6 +21,7 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
   watch(
     () => panelStore.detailPanelState.visible,
     (visible) => {
+      console.log("1. detailEventPath.value", detailEventPath.value);
       if (!visible) {
         detailEventPath.value = undefined;
       }
@@ -30,16 +31,21 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
   const toggle = () => {
     const show = !panelStore.detailPanelState.visible;
     panelStore.setVisibility(PanelDetail, show);
+    console.log("2. detailEventPath.value", detailEventPath.value);
     if (!show) {
       detailEventPath.value = undefined;
     }
   };
 
   const clearDetailEventPath = () => {
+    console.log("3. detailEventPath.value", detailEventPath.value);
+
     detailEventPath.value = undefined;
   };
 
   const setDetailEventPath = (path: EventPath) => {
+    console.log("4. detailEventPath.value", detailEventPath.value);
+
     if (equivalentPaths(path, detailEventPath.value)) {
       detailEventPath.value = undefined;
     } else {
@@ -49,11 +55,15 @@ export const useEventDetailStore = defineStore("eventDetail", () => {
   };
 
   const isDetailEventPath = computed(
-    () => (path: EventPath | undefined) =>
+    () => (path: EventPath | undefined) => {
+      console.log("5. detailEventPath.value", detailEventPath.value);
       !!path && equivalentPaths(path, detailEventPath.value)
+    }
   );
 
   const prev = computed<EventPath | undefined>(() => {
+    console.log("6. detailEventPath.value", detailEventPath.value);
+
     if (!detailEventPath.value) {
       return;
     }

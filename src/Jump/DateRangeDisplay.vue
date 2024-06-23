@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePageStore } from "@/Markwhen/pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import {
   dateRangeToString,
   type DisplayScale,
@@ -13,7 +13,7 @@ const props = defineProps<{
   selected: boolean;
   last: boolean;
 }>();
-const pageStore = usePageStore();
+const markwhenStore = useMarkwhenStore();
 
 const dateRangeString = computed(
   () =>
@@ -21,7 +21,7 @@ const dateRangeString = computed(
     dateRangeToString(
       props.range,
       props.scale || "day",
-      pageStore.header.dateFormat as DateFormat
+      markwhenStore.pageTimeline.header.dateFormat as DateFormat
     )
 );
 </script>

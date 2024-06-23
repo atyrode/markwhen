@@ -8,7 +8,7 @@ import type { Event } from "@markwhen/parser/lib/Types";
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { useEventFinder } from "@/Views/ViewOrchestrator/useEventFinder";
-import { usePageStore } from "./pageStore";
+import { useMarkwhenStore } from "@/Markwhen/markwhenStore";
 import { useTransformStore } from "./transformStore";
 
 type EventPathMap = [number[], Map<number, EventPath>];
@@ -82,9 +82,9 @@ const indexFromEventOrIndex = (
 
 export const useEventMapStore = defineStore("eventMap", () => {
   const transformStore = useTransformStore();
-  const pageStore = usePageStore();
+  const markwhenStore = useMarkwhenStore();
 
-  const pageEvents = computed(() => pageStore.pageTimeline.events);
+  const pageEvents = computed(() => markwhenStore.pageTimeline.events);
   const transformedEvents = computed(() => transformStore.transformedEvents);
 
   const pageMap = computed(() => {
