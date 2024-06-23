@@ -19,6 +19,7 @@ import type {
   EventPaths,
 } from "@/Views/ViewOrchestrator/useStateSerializer";
 import { todayRange, type EventCreationParams } from "@/NewEvent/newEventStore";
+import { set } from "@vueuse/core";
 
 export const useEditorOrchestratorStore = defineStore(
   "editorOrchestrator",
@@ -37,10 +38,12 @@ export const useEditorOrchestratorStore = defineStore(
 
     const addPage = () => {
       console.log("addPage here in editorOrchestratorStore.ts might be problematic!");
+      setText(markwhenStore.rawTimelineString);
     };
 
     const movePages = (from: number, to: number) => {
       console.log("movePages here in editorOrchestratorStore.ts might be problematic!");
+      setText(markwhenStore.rawTimelineString);
     };
 
     const setPageTimelineString = (newString: string) => {
@@ -58,6 +61,7 @@ export const useEditorOrchestratorStore = defineStore(
 
     const deletePage = (index: number) => {
       console.log("deletePage here in editorOrchestratorStore.ts might be problematic!");
+      setText(markwhenStore.rawTimelineString);
     };
 
     const editEventDateRange = (

@@ -52,6 +52,7 @@ const computedStyle = computed(() => {
 watch(translateX, (val) => emit("moving", val || 0));
 
 const click = () => {
+  // pageStore.setPageIndex(props.pageIndex);
   console.log("Click! Nothing happens anymore!");
 };
 
