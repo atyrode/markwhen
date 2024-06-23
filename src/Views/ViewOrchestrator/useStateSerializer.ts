@@ -9,14 +9,21 @@ import { useEventDetailStore } from "@/EventDetail/eventDetailStore";
 import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
 import { useRoute } from "vue-router";
 
-export type EventPath = number[];
+export type EventPaths = { [pathType in EventPath["type"]]?: EventPath };
+
+export interface EventPath {
+  type: "whole" | "page" | "pageFiltered";
+  path: number[];
+}
 
 export interface AppState {
   isDark?: boolean;
-  hoveringPath?: EventPath;
+  hoveringPath?: EventPaths;
   detailPath?: EventPath;
   pageIndex: number;
-  colorMap: Record<string, Record<string, string>>;
+  colorMap: Record<string, string>;
+  // Fix for a later commit in Timeline
+  // colorMap: Record<string, Record<string, string>>;
 }
 export interface MarkwhenState {
   rawText?: string;
@@ -30,10 +37,18 @@ export interface State {
 }
 
 export const equivalentPaths = (p1?: EventPath, p2?: EventPath): boolean => {
-  if (!p1 || !p2) {
+  if (!p1 || !p2 || p1.type !== p2.type) {
     return false;
   }
-  return p1.join(",") === p2.join(",");
+  const path1 = p1.path;
+  const path2 = p2.path;
+
+  return (
+    path1.length > 0 &&
+    path2.length > 0 &&
+    path1.length === path2.length &&
+    path1.every((pathValue, index) => path2[index] === pathValue)
+  );
 };
 
 export const useStateSerializer = () => {
@@ -44,8 +59,10 @@ export const useStateSerializer = () => {
   const eventDetailStore = useEventDetailStore();
   const route = useRoute()
 
-  const colorMap = computed(() => { 
-    return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
+  const colorMap = computed(() => {
+    return markwhenStore.timelines[markwhenStore.pageIndex].tags
+    // Fix for a later commit in Timeline
+    // return { "default": markwhenStore.timelines[markwhenStore.pageIndex].tags}
   });
 
   const state = computed<State>(() => ({
