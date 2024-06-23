@@ -20,7 +20,7 @@ import { parseDateRange } from "@markwhen/parser";
 import type { JumpResults, ParseResult } from "./jumpStore";
 import * as chrono from "chrono-node";
 import { isEventNode, eventValue, iterate } from "@markwhen/parser/lib/Noder";
-import type { EventPaths } from "@/Views/ViewOrchestrator/useStateSerializer";
+import type { EventPath } from "@/Views/ViewOrchestrator/useStateSerializer";
 
 export type SearchState = "ready" | "indexing" | "uninitialized";
 interface SearchDocument {
@@ -77,7 +77,7 @@ export const useSearch = () => {
   const markwhenStore = useMarkwhenStore();
   const mapStore = useEventMapStore();
 
-  const eventToDocument = (e: Event, path: EventPaths): SearchDocument => ({
+  const eventToDocument = (e: Event, path: EventPath): SearchDocument => ({
     path: JSON.stringify(path),
     dateTime: toDateRange(e.dateRangeIso).fromDateTime.toLocaleString(
       DateTime.DATETIME_HUGE
