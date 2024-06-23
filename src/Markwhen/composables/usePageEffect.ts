@@ -9,8 +9,6 @@ export const usePageEffect = <T>(
   defaultPageState: (pageIndex: number) => T
 ) => {
 
-  console.log("defaultPageState", defaultPageState)
-
   const editorOrchestrator = useEditorOrchestratorStore();
   const markwhenStore = useMarkwhenStore();
 
