@@ -39,9 +39,9 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
 
   // Attempt to remove pageStore dependency
   const pageIndex = ref<number>(0);
-  // const setPageIndex = (index: number) => {
-  //   pageIndex.value = index;
-  // };
+  const setPageIndex = (index: number) => {
+    pageIndex.value = index;
+  };
   const tags = computed(() => Object.keys(timelines.value[pageIndex.value].tags));
   const pageTimeline = computed(() => timelines.value[pageIndex.value]);
   ///
@@ -59,5 +59,6 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
 
     // actions
     setRawTimelineString,
+    setPageIndex,
   };
 });
