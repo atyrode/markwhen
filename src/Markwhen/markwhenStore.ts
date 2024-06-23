@@ -35,6 +35,15 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
     rawTimelineString.value = s;
   };
 
+  // Attempt to remove pageStore dependency
+  const pageIndex = ref<number>(0);
+  const setPageIndex = (index: number) => {
+    pageIndex.value = index;
+  };
+  const tags = computed(() => Object.keys(timelines.value[pageIndex.value].tags));
+  const pageTimeline = computed(() => timelines.value[pageIndex.value]);
+  ///
+
   return {
     // state
     rawTimelineString,
@@ -42,6 +51,8 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
 
     // getters
     timelines,
+    pageTimeline,
+    tags,
 
     // actions
     setRawTimelineString,
