@@ -4,12 +4,13 @@ import {
 } from "@/EditorOrchestrator/editorOrchestratorStore";
 import { computed, reactive, watchEffect, watch } from "vue";
 import { useMarkwhenStore } from "../markwhenStore";
-import { usePageStore } from "../pageStore";
 
 export const usePageEffect = <T>(
   defaultPageState: (pageIndex: number) => T
 ) => {
-  const pageStore = usePageStore();
+
+  console.log("defaultPageState", defaultPageState)
+
   const editorOrchestrator = useEditorOrchestratorStore();
   const markwhenStore = useMarkwhenStore();
 
@@ -25,14 +26,14 @@ export const usePageEffect = <T>(
   );
 
   watchEffect(() => {
-    const pageIndex = pageStore.pageIndex;
+    const pageIndex = markwhenStore.pageIndex;
     if (pageState[pageIndex] === undefined) {
       // If we do not have state for this page, give it the default
       pageState[pageIndex] = defaultPageState(pageIndex);
     }
   });
 
-  pageStore.$onAction(({ name, store, args, after }) => {
+  markwhenStore.$onAction(({ name, store, args, after }) => {
     if (name === "setPageIndex") {
       const pageIndex = args[0];
       if (pageState[pageIndex] === undefined) {
@@ -54,7 +55,7 @@ export const usePageEffect = <T>(
           to
         );
         const rearrangedSettings = order.map((i) => pageState[i]);
-        const newIndex = order.findIndex((i) => i === pageStore.pageIndex);
+        const newIndex = order.findIndex((i) => i === markwhenStore.pageIndex);
         const newIndices = Object.keys(rearrangedSettings);
 
         after(() => {
@@ -62,7 +63,7 @@ export const usePageEffect = <T>(
             const i = parseInt(newIndex);
             pageState[i] = rearrangedSettings[i];
           }
-          pageStore.setPageIndex(newIndex);
+          markwhenStore.setPageIndex(newIndex);
         });
 
         break;
@@ -72,10 +73,10 @@ export const usePageEffect = <T>(
           return;
         }
         if (
-          pageStore.pageIndex === index &&
+          markwhenStore.pageIndex === index &&
           index === markwhenStore.timelines.length - 1
         ) {
-          pageStore.setPageIndex(index - 1);
+          markwhenStore.setPageIndex(index - 1);
         }
         // Move all the settings up
         const indices = Object.keys(pageState)
@@ -89,9 +90,9 @@ export const usePageEffect = <T>(
   });
 
   return computed({
-    get: () => pageState[pageStore.pageIndex],
+    get: () => pageState[markwhenStore.pageIndex],
     set(newVal: T) {
-      pageState[pageStore.pageIndex] = newVal;
+      pageState[markwhenStore.pageIndex] = newVal;
     },
   });
 };

@@ -11,6 +11,7 @@ export const useTagColor = (tag: MaybeRef<string>) => {
   watchEffect(() => { 
     tag = unref(tag);
     color.value = pageStore.tags[unref(tag)];
+    console.log("color.value", color.value);
   });
   //watchEffect(() => (color.value = pageStore.tags[unref(tag)]));
 
