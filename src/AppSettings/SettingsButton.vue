@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import Dialog from 'primevue/dialog';
+import SettingsMenu from './SettingsMenu.vue';
+
+const visible = ref(false);
+</script>
+
 <template>
     <div>
         <button @click="visible = true"
@@ -11,39 +19,8 @@
             </svg>
         </button>
         
-        <Dialog v-model:visible="visible" modal header="Settings" dismissableMask="true" :style="{ width: '35rem', dialogTitleFontSize: '400px'}">
+        <Dialog v-model:visible="visible" modal pt:mask:class="backdrop-blur-sm" header="Settings" dismissableMask="true" :style="{ width: '35rem'}">
             <SettingsMenu />
         </Dialog>
     </div>
 </template>
-
-<script lang="ts">
-import { ref } from 'vue';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import SettingsMenu from './SettingsMenu.vue';
-
-const visible = ref(false);
-
-export default {
-    components: {
-        Dialog,
-        InputText,
-        Button,
-        SettingsMenu
-    },
-    setup() {
-        const visible = ref(false);
-        return {
-            visible
-        };
-    },
-};
-</script>
-
-<style scoped>
-svg {
-    display: ;
-}
-</style>
