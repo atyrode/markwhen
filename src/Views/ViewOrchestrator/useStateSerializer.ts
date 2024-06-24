@@ -13,6 +13,7 @@ export type EventPath = number[];
 
 export interface AppState {
   isDark?: boolean;
+  timelineSettings?: boolean;
   hoveringPath?: EventPath;
   detailPath?: EventPath;
   path?: string;
@@ -53,6 +54,7 @@ export const useStateSerializer = () => {
 
   const appState = computed<AppState>(() => ({
     isDark: appSettingsStore.inferredDarkMode,
+    timelineSettings: appSettingsStore.timelineSettings,
     hoveringPath: toRaw(editorOrchestrator.hoveringEventPath) || undefined,
     detailPath: toRaw(eventDetailStore.detailEventPath),
     path: route.path,

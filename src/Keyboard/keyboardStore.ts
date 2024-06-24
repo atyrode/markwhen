@@ -34,7 +34,6 @@ export const useKeyboardStore = defineStore("keyboard", () => {
   const key = (k: ComputedRef<boolean>, f: () => void) =>
     whenever(and(notUsingInput, k), f);
 
-  key(l, appSettingsStore.toggleDarkMode);
   key(d, () =>
     panelStore.setVisibility("detail", !panelStore.detailPanelState.visible)
   );
