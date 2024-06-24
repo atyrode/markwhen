@@ -5,7 +5,7 @@ import EventGroupDetail from "./EventGroupDetail.vue";
 import type { Event } from "@markwhen/parser/lib/Types";
 import { computed, onMounted, ref, watch } from "vue";
 import EventDetailPaneTop from "./EventDetailPaneTop.vue";
-import { usePanelResize } from "@/Sidebar/composables/usePanelResize";
+import { usePanelResize } from "@/utilities/usePanelResize";
 import { PanelDetail, usePanelStore } from "@/Panels/panelStore";
 import { usePanelMove } from "@/Panels/composables/usePanelMove";
 import type { NodeArray, Node } from "@markwhen/parser/lib/Node";

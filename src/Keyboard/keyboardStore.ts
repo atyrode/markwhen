@@ -3,7 +3,6 @@ import { useMagicKeys, useActiveElement, whenever } from "@vueuse/core";
 import { computed, type ComputedRef, type Ref } from "vue";
 import { useAppStore } from "@/App/appStore";
 import { usePanelStore } from "@/Panels/panelStore";
-import { useSidebarStore } from "@/Sidebar/sidebarStore";
 import { useEventDetailStore } from "@/EventDetail/eventDetailStore";
 import { useTransformStore } from "@/Markwhen/transformStore";
 import { getLast } from "@markwhen/parser/lib/Noder";
@@ -11,7 +10,6 @@ import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
 import { useJumpStore } from "@/Jump/jumpStore";
 
 export const useKeyboardStore = defineStore("keyboard", () => {
-  const sidebarStore = useSidebarStore();
   const panelStore = usePanelStore();
   const activeElement = useActiveElement();
   const appSettingsStore = useAppSettingsStore();
@@ -43,7 +41,6 @@ export const useKeyboardStore = defineStore("keyboard", () => {
   // timeline
   key(t, () => {});
   // map
-  key(z, sidebarStore.toggle);
   key(j, () => jumpStore.setShowJumpDialog(!jumpStore.showingJumpDialog));
   key(comma, () => {
     if (!eventDetailStore.detailEventPath) {

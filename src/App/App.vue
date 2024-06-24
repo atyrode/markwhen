@@ -7,7 +7,6 @@ import { useAppStore } from "./appStore";
 import Sidebar from "../Sidebar/Sidebar.vue";
 import { useAppHead } from "./composables/useAppHead";
 import Panels from "../Panels/Panels.vue";
-import { useSidebarStore } from "@/Sidebar/sidebarStore";
 import { useKeyboardStore } from "@/Keyboard/keyboardStore";
 import { useQuerySetter } from "@/router/useQuerySetter";
 import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
@@ -15,7 +14,6 @@ import QuickEditor from "@/QuickEditor/QuickEditor.vue";
 
 const appSettingsStore = useAppSettingsStore();
 const appStore = useAppStore();
-const sidebarStore = useSidebarStore();
 const editorOrchestrator = useEditorOrchestratorStore();
 
 useAppHead();
@@ -41,7 +39,6 @@ provide(isEditable, editorOrchestrator.editable);
     <div
       class="flex flex-row h-full !bg-vscode-editor-background dark:bg-slate-700 bg-slate-50 dark:text-white text-gray-900 relative w-full"
     >
-      <Sidebar v-show="sidebarStore.visible" />
       <div class="flex flex-col overflow-auto w-full">
         <Panels />
         <Drawer />

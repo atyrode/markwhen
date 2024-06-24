@@ -1,48 +1,59 @@
 import { useVisualizationStore } from "@/Views/visualizationStore";
-import { useSidebarStore } from "@/Sidebar/sidebarStore";
-
 import { useMediaQuery } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { computed, ref, watchEffect, watch } from "vue";
 
 export const themeOptions = ["System", "Light", "Dark"] as const;
 
-const getSettings = () => {
+// Utility function to get settings from localStorage
+const getSettingsFromLocalStorage = () => {
   const savedSettings = localStorage.getItem("settings");
   if (savedSettings) {
     return JSON.parse(savedSettings);
   }
+  return {};
+};
+
+// Utility function to save settings to localStorage
+const saveSettingsToLocalStorage = (settings: Record<string, any>) => {
+  localStorage.setItem("settings", JSON.stringify(settings));
+};
+
+// Centralized function to get a specific setting
+const getSetting = (key: string, defaultValue: any) => {
+  const settings = getSettingsFromLocalStorage();
+  return settings[key] !== undefined ? settings[key] : defaultValue;
+};
+
+// Centralized function to set a specific setting
+const setSetting = (key: string, value: any) => {
+  const settings = getSettingsFromLocalStorage();
+  settings[key] = value;
+  saveSettingsToLocalStorage(settings);
 };
 
 export const useAppSettingsStore = defineStore("appSettings", () => {
-
   console.log('appSettingsStore.ts: useAppSettingsStore()');
-  const sidebarStore = useSidebarStore();
 
-  const theme = ref<typeof themeOptions[number]>("System");
-  const sidebarVisible = ref<boolean>(false); // Add sidebar visibility state
-  
-  const savedSettings = getSettings();
-  if (savedSettings) {
-    if (savedSettings.theme && themeOptions.includes(savedSettings.theme)) {
-      console.log('setting theme to ', savedSettings.theme);
-      theme.value = savedSettings.theme;
-    }
-    if (typeof savedSettings.sidebarVisible === 'boolean') {
-      sidebarVisible.value = savedSettings.sidebarVisible;
-    }
-  }
-  
+  const theme = ref<typeof themeOptions[number]>(
+    getSetting("theme", "System")
+  );
+
   const mediaQueryDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const toggleDarkMode = () => {
-    if (theme.value === "System") {
-      theme.value = "Dark";
-    } else if (theme.value === "Dark") {
-      theme.value = "Light";
-    } else {
-      theme.value = "System";
+    switch (theme.value) {
+      case "System":
+        theme.value = "Dark";
+        break;
+      case "Dark":
+        theme.value = "Light";
+        break;
+      case "Light":
+        theme.value = "System";
+        break;
     }
+    setSetting("theme", theme.value);
   };
 
   const inferredDarkMode = computed(() => {
@@ -55,26 +66,24 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
     return mediaQueryDarkMode.value;
   });
 
-  watch(sidebarVisible, (newValue) => {
-      console.log('switching sidebar visibility from ', sidebarStore.visible, ' to ', newValue);
-      sidebarStore.visible = newValue;
+  watch(theme, (newValue) => {
+    setSetting("theme", newValue);
   });
 
-  watchEffect(() => {
-    localStorage.setItem(
-      "settings",
-      JSON.stringify({
-        theme: theme.value,
-        sidebarVisible: sidebarVisible.value, // Save sidebar visibility state
-      })
-    );
-  });
+  // Expose the get and set functions for individual settings
+  const getSettingValue = (key: string, defaultValue: any) => {
+    return getSetting(key, defaultValue);
+  };
+
+  const setSettingValue = (key: string, value: any) => {
+    setSetting(key, value);
+  };
 
   return {
     theme,
     inferredDarkMode,
-    savedSettings,
     toggleDarkMode,
-    sidebarVisible, // Return sidebar visibility state
+    getSettingValue, // Expose function to get individual setting
+    setSettingValue, // Expose function to set individual setting
   };
 });
