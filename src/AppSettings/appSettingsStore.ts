@@ -1,9 +1,10 @@
 import { useVisualizationStore } from "@/Views/visualizationStore";
+import { useSidebarStore } from "@/Sidebar/sidebarStore";
+
 import { useMediaQuery } from "@vueuse/core";
 import { defineStore } from "pinia";
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, watch } from "vue";
 
-export const defaultViewOptions = ["Timeline", "Calendar", "Map"] as const;
 export const themeOptions = ["System", "Light", "Dark"] as const;
 
 const getSettings = () => {
@@ -14,27 +15,24 @@ const getSettings = () => {
 };
 
 export const useAppSettingsStore = defineStore("appSettings", () => {
-  const defaultView = ref<typeof defaultViewOptions[number]>("Timeline");
-  const theme = ref<typeof themeOptions[number]>("System");
 
+  console.log('appSettingsStore.ts: useAppSettingsStore()');
+  const sidebarStore = useSidebarStore();
+
+  const theme = ref<typeof themeOptions[number]>("System");
+  const sidebarVisible = ref<boolean>(false); // Add sidebar visibility state
+  
   const savedSettings = getSettings();
   if (savedSettings) {
-    // if (
-    //   savedSettings.defaultView &&
-    //   defaultViewOptions.includes(savedSettings.defaultView)
-    // ) {
-    //   defaultView.value = savedSettings.defaultView;
-    //   const foundView = visualizationStore.activeViews.findIndex(
-    //     (v) => v.name === savedSettings.defaultView
-    //   );
-    //   if (foundView >= 0) {
-    //     visualizationStore.selectedViewIndex = foundView;
-    //   }
-    // }
     if (savedSettings.theme && themeOptions.includes(savedSettings.theme)) {
+      console.log('setting theme to ', savedSettings.theme);
       theme.value = savedSettings.theme;
     }
+    if (typeof savedSettings.sidebarVisible === 'boolean') {
+      sidebarVisible.value = savedSettings.sidebarVisible;
+    }
   }
+  
   const mediaQueryDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const toggleDarkMode = () => {
@@ -57,20 +55,26 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
     return mediaQueryDarkMode.value;
   });
 
+  watch(sidebarVisible, (newValue) => {
+      console.log('switching sidebar visibility from ', sidebarStore.visible, ' to ', newValue);
+      sidebarStore.visible = newValue;
+  });
+
   watchEffect(() => {
     localStorage.setItem(
       "settings",
       JSON.stringify({
-        defaultView: defaultView.value,
         theme: theme.value,
+        sidebarVisible: sidebarVisible.value, // Save sidebar visibility state
       })
     );
   });
 
   return {
-    defaultView,
     theme,
     inferredDarkMode,
+    savedSettings,
     toggleDarkMode,
+    sidebarVisible, // Return sidebar visibility state
   };
 });

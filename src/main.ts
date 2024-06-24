@@ -7,6 +7,7 @@ import { createHead, useHead } from "@vueuse/head";
 
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
+import Button from "primevue/button"
 
 const app = createApp(App);
 export const pinia = createPinia();
