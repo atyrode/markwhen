@@ -29,10 +29,10 @@ watch(viewMenuToggle, (newValue) => {
         <span class="text-surface-500 dark:text-surface-400">Theme</span>
         <SelectButton v-model="themeValue" :options="themeOptions" aria-labelledby="basic" :allowEmpty="false"/>
     </div>
-    <div class="flex justify-between items-center mb-4">
+    <!-- <div class="flex justify-between items-center mb-4">
         <span class="text-surface-500 dark:text-surface-400">Enable view menu</span>
         <ToggleSwitch v-model="viewMenuToggle" />
-    </div>
+    </div> -->
 </template>
 
 <style scoped></style>
