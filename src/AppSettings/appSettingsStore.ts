@@ -5,6 +5,7 @@ import { computed, ref, watchEffect, watch } from "vue";
 
 export const themeOptions = ["System", "Light", "Dark"] as const;
 export const timelineSettingsToggle = [true, false] as const;
+export const viewSettingsToggle = [true, false] as const;
 
 export const useAppSettingsStore = defineStore("appSettings", () => {
 
@@ -54,7 +55,11 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
   });
 
   const timelineSettings = ref<typeof timelineSettingsToggle[number]>(
-    initializeSettings("timelineSettings", true)
+    initializeSettings("timelineSettings", false)
+  );
+
+  const viewSettings = ref<typeof viewSettingsToggle[number]>(
+    initializeSettings("viewSettings", false)
   );
 
   watch(theme,
@@ -69,10 +74,17 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
       console.log("Sidebar visibility changed to " + timelineSettings.value);
   });
 
+  watch(viewSettings,
+    () => {
+      changeSetting("viewSettings", viewSettings.value);
+      console.log("View settings visibility changed to " + viewSettings.value);
+  });
+
   return {
     // settings
     theme,
     timelineSettings,
+    viewSettings,
     inferredDarkMode,
     changeSetting
   };
