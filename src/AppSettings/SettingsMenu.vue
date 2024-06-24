@@ -7,7 +7,6 @@ import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
 import { useVisualizationStore } from '@/Views/visualizationStore';
 
 const appSettingsStore = useAppSettingsStore();
-const visualizationStore = useVisualizationStore();
 
 // Theme Change
 const themeValue = ref(appSettingsStore.theme);
@@ -17,22 +16,22 @@ watch(themeValue, (newValue) => {
 });
 
 // View menu Toggle
-const viewMenuToggle = ref(visualizationStore.showingWelcomeViewPicker);
-watch(viewMenuToggle, (newValue) => {
-    visualizationStore.showingWelcomeViewPicker = newValue;
+const timelineSettingsToggle = ref(appSettingsStore.timelineSettings);
+watch(timelineSettingsToggle, (newValue) => {
+    appSettingsStore.timelineSettings = newValue;
 });
 </script>
 
 <template>
     <Divider />
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-between items-center mb-4 mt-8">
         <span class="text-surface-500 dark:text-surface-400">Theme</span>
         <SelectButton v-model="themeValue" :options="themeOptions" aria-labelledby="basic" :allowEmpty="false"/>
     </div>
-    <!-- <div class="flex justify-between items-center mb-4">
-        <span class="text-surface-500 dark:text-surface-400">Enable view menu</span>
-        <ToggleSwitch v-model="viewMenuToggle" />
-    </div> -->
+    <div class="flex justify-between items-center mb-4">
+        <span class="text-surface-500 dark:text-surface-400">Enable Timeline Settings</span>
+        <ToggleSwitch v-model="timelineSettingsToggle" />
+    </div>
 </template>
 
 <style scoped></style>

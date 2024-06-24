@@ -1,7 +1,7 @@
 <template>
     <div>
         <button @click="visible = true"
-            class="settings-button py-[0.3rem] px-[0.3rem] disabled:text-slate-400 dark:disabled:text-slate-500 relative dark:ring-slate-600 ring-slate-400 rounded dark:text-slate-400 text-slate-500">
+            class="settings-button disabled:text-slate-400 dark:disabled:text-slate-500 relative dark:ring-slate-600 ring-slate-400 rounded dark:text-slate-400 text-slate-500">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                 class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -11,7 +11,7 @@
             </svg>
         </button>
         
-        <Dialog v-model:visible="visible" modal header="Settings" :style="{ width: '35rem' }">
+        <Dialog v-model:visible="visible" modal header="Settings" dismissableMask="true" :style="{ width: '35rem', dialogTitleFontSize: '400px'}">
             <SettingsMenu />
         </Dialog>
     </div>
@@ -41,3 +41,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+svg {
+    display: ;
+}
+</style>

@@ -4,7 +4,6 @@ import { computed, provide } from "vue";
 import Drawer from "../Drawer/Drawer.vue";
 import { useEditorOrchestratorStore } from "@/EditorOrchestrator/editorOrchestratorStore";
 import { useAppStore } from "./appStore";
-import Sidebar from "../Sidebar/Sidebar.vue";
 import { useAppHead } from "./composables/useAppHead";
 import Panels from "../Panels/Panels.vue";
 import { useKeyboardStore } from "@/Keyboard/keyboardStore";
@@ -48,4 +47,6 @@ provide(isEditable, editorOrchestrator.editable);
     </div>
   </div>
 </template>
-<style scoped></style>
+
+<style scoped>
+</style>
