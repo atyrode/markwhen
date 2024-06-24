@@ -47,7 +47,7 @@ provide(isEditable, editorOrchestrator.editable);
         <Drawer />
       </div>
       <!-- Uncomment the QuickEditor to have some editing functionality -->
-      <QuickEditor />
+      <!-- <QuickEditor /> -->
     </div>
   </div>
 </template>

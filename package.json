@@ -24,6 +24,7 @@
     "lunr": "^2.3.9",
     "luxon": "^3.2.1",
     "pinia": "^2.0.30",
+    "primevue": "^4.0.0-rc.2",
     "stripe": "^10.15.0",
     "throttle-debounce": "^5.0.0",
     "vue": "^3.2.47",

@@ -1,15 +1,9 @@
 
 export const exampleTimeline = `
----
 title: Welcome to Markwhen!
 
-edit:
-  - rob@markwhen.com
-
-view: \*
-
 #Project1: #d336b1
----
+
 section Welcome #welcome
 now: This example timeline showcases some of markwhen's features.
 
