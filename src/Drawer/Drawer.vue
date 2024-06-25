@@ -8,7 +8,7 @@ import Jump from "@/Jump/JumpButton.vue";
 import { useVisualizationStore } from "@/Views/visualizationStore";
 import VisualizationIndicator from "./VisualizationSwitcher/VisualizationIndicator.vue";
 import { useMobileViewStore } from "@/Views/mobileViewStore";
-import SettingsButton from "@/AppSettings/SettingsButton.vue";
+import Settings from "@/AppSettings/Settings.vue";
 import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
 
 const visualizationStore = useVisualizationStore();
@@ -25,11 +25,11 @@ const useTopBorder = computed(() => {
 
 <template>
   <div class="drawerSettings">
-    <SettingsButton class="absolute bottom-0 bg-slate-200 dark:bg-slate-600 pointer-events-auto p-1.5 m-2 rounded" />
+    <Settings class="absolute bottom-0 bg-slate-200 dark:bg-slate-600 pointer-events-auto p-1.5 m-3 rounded" />
 
     <div class="flex-grow"></div>
 
-    <div v-if="appSettingsStore.viewSettings" class="absolute flex bottom-0 right-0 bg-slate-200 dark:bg-slate-600 pointer-events-auto p-1 m-2 rounded">
+    <div v-if="appSettingsStore.viewSettings" class="absolute flex bottom-0 right-0 bg-slate-200 dark:bg-slate-600 pointer-events-auto p-1 m-3 rounded">
       <NewEvent />
       <Sort v-if="currentView.uses?.sort" />
       <Jump v-if="currentView.uses?.jump" />
