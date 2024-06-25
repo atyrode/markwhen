@@ -25,7 +25,7 @@ const useTopBorder = computed(() => {
 
 <template>
   <div class="drawerSettings">
-    <Settings class="absolute bottom-0 bg-slate-200 dark:bg-slate-600 pointer-events-auto p-1.5 m-3 rounded" />
+    <Settings />
 
     <div class="flex-grow"></div>
 

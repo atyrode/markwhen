@@ -27,6 +27,12 @@ watch(viewSettingsToggle, (newValue) => {
     appSettingsStore.viewSettings = newValue;
 });
 
+// Quick Editor Toggle
+const quickEditorToggle = ref(appSettingsStore.quickEditor);
+watch(quickEditorToggle, (newValue) => {
+    appSettingsStore.quickEditor = newValue;
+});
+
 </script>
 
 <template>
@@ -42,6 +48,10 @@ watch(viewSettingsToggle, (newValue) => {
     <div class="flex justify-between items-center mb-4">
         <span class="text-surface-500 dark:text-surface-400">Enable View Settings</span>
         <ToggleSwitch v-model="viewSettingsToggle" />
+    </div>
+    <div class="flex justify-between items-center mb-4">
+        <span class="text-surface-500 dark:text-surface-400">Enable Quick Editor</span>
+        <ToggleSwitch v-model="quickEditorToggle" />
     </div>
 </template>
 

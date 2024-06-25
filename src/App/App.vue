@@ -43,7 +43,7 @@ provide(isEditable, editorOrchestrator.editable);
         <Drawer />
       </div>
       <!-- Uncomment the QuickEditor to have some editing functionality -->
-      <!-- <QuickEditor /> -->
+      <QuickEditor v-if="appSettingsStore.quickEditor"/>
     </div>
   </div>
 </template>

@@ -6,6 +6,7 @@ import { computed, ref, watchEffect, watch } from "vue";
 export const themeOptions = ["System", "Light", "Dark"] as const;
 export const timelineSettingsToggle = [true, false] as const;
 export const viewSettingsToggle = [true, false] as const;
+export const quickEditorToggle = [true, false] as const;
 
 export const useAppSettingsStore = defineStore("appSettings", () => {
 
@@ -25,6 +26,11 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
     const settings = getSettingsFromLocalStorage();
     return settings[settingKey] !== undefined ? settings[settingKey] : defaultValue;
   };
+
+  const getSetting = (key: string) => {
+    const settings = getSettingsFromLocalStorage();
+    return settings[key];
+  }
 
   const changeSetting = (key: string, value: any) => {
     const settings = getSettingsFromLocalStorage();
@@ -62,6 +68,10 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
     initializeSettings("viewSettings", false)
   );
 
+  const quickEditor = ref<typeof quickEditorToggle[number]>(
+    initializeSettings("quickEditor", false)
+  );
+
   watch(theme,
     () => {
       changeSetting("theme", theme.value);
@@ -80,12 +90,21 @@ export const useAppSettingsStore = defineStore("appSettings", () => {
       console.log("View settings visibility changed to " + viewSettings.value);
   });
 
+  watch(quickEditor,
+    () => {
+      changeSetting("quickEditor", quickEditor.value);
+      console.log("Quick editor visibility changed to " + quickEditor.value);
+  });
+
+  watch
   return {
     // settings
     theme,
     timelineSettings,
     viewSettings,
+    quickEditor,
     inferredDarkMode,
-    changeSetting
+    changeSetting,
+    getSetting
   };
 });

@@ -5,11 +5,19 @@ import { computed, reactive, ref, shallowReactive, type Ref } from "vue";
 import type { Timeline } from "@markwhen/parser/lib/Types";
 import { useParserWorker } from "./composables/useParserWorker";
 import { exampleTimeline } from "@/exampleTimeline";
+import { useAppSettingsStore } from "@/AppSettings/appSettingsStore";
 
 export const recurrenceLimit = 100;
 
 export const useMarkwhenStore = defineStore("markwhen", () => {
-  const rawTimelineString = ref<string>(exampleTimeline);
+  const appSettingsStore = useAppSettingsStore();
+  const cachedTimelineString = appSettingsStore.getSetting("timeline")
+  console.log("cachedTimelineString", cachedTimelineString);
+  const rawTimelineString = ref<string>(cachedTimelineString === undefined ? exampleTimeline : cachedTimelineString);
+
+  if (cachedTimelineString === undefined) {
+    appSettingsStore.changeSetting("timeline", exampleTimeline);
+  }
 
   // const cache = reactive(new Cache());
   // const timelines = computed(
@@ -35,6 +43,7 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
 
   const setRawTimelineString = (s: string) => {
     rawTimelineString.value = s;
+    appSettingsStore.changeSetting("timeline", s);
   };
 
   // Attempt to remove pageSt0re dependency
