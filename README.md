@@ -14,7 +14,7 @@ The view container renders different views, like the timeline and the calendar. 
 View container:
 ```sh
 > git clone git@github.com:atyrode/markwhen_view.git
-> cd markwhen
+> cd markwhen_view
 > npm i
 > npm run dev
 ```
@@ -22,7 +22,7 @@ View container:
 Timeline view:
 ```sh
 > git clone git@github.com:atyrode/markwhen_timeline.git
-> cd timeline
+> cd markwhen_timeline
 > npm i
 > npm run dev
 ```
