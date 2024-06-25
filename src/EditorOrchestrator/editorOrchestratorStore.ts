@@ -33,8 +33,8 @@ export const useEditorOrchestratorStore = defineStore(
     const hoveringEventPath = ref<EventPath>();
     const choosingColor = ref(false);
 
-    const setText = (text: string) => {
-      markwhenStore.setRawTimelineString(text);
+    const setText = (text: string, range?: { from: number; to: number }) => {
+      markwhenStore.setRawTimelineString(text, range);
     };
 
     const addPage = () => {

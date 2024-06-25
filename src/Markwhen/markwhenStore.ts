@@ -41,7 +41,12 @@ export const useMarkwhenStore = defineStore("markwhen", () => {
     });
   }
 
-  const setRawTimelineString = (s: string) => {
+  const setRawTimelineString = (s: string, range?: { from: number; to: number }) => {
+    if (range) {
+      const pre = rawTimelineString.value.substring(0, range.from);
+      const post = rawTimelineString.value.substring(range.to);
+      s = pre + s + post;
+    }
     rawTimelineString.value = s;
     appSettingsStore.changeSetting("timeline", s);
   };
